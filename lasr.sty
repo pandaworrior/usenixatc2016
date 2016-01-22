@@ -1,0 +1,240 @@
+\NeedsTeXFormat{LaTeX2e}[1996/06/01]
+\ProvidesPackage{Attic/style/lasr}[2006/10/09 v2.0 (Taylor L. Riche,
+Jeff Napper)]
+
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+\RequirePackage[pdftex]{graphicx}
+\RequirePackage[usenames]{color}
+%\RequirePackage{epsfig}
+\RequirePackage{verbatim}
+%\RequirePackage{moreverb}
+\RequirePackage{alltt}
+\RequirePackage{ifthen}
+\RequirePackage{amsthm,amssymb,amsmath}
+%\RequirePackage[ps2pdf]{thumbpdf}
+\RequirePackage{afterpage}
+
+\newboolean{opttight}
+\newboolean{optdraft}
+\newboolean{optdraft-c}
+\newboolean{opttechreport}
+\newboolean{optdummycite}
+% Default to using ps fonts (for Taylor!)
+\newboolean{optpsfont}\setboolean{optpsfont}{true}
+\newboolean{optsfdefs}\setboolean{optsfdefs}{true}
+
+\DeclareOption{tight}{\setboolean{opttight}{true}}{\OptionNotUsed}
+\DeclareOption{draft}{\setboolean{optdraft}{true}}{\OptionNotUsed}
+\DeclareOption{draft-c}{\setboolean{optdraft-c}{true}}{\OptionNotUsed}
+\DeclareOption{techreport}{\setboolean{opttechreport}{true}}{\OptionNotUsed}
+\DeclareOption{dummycite}{\setboolean{optdummycite}{true}}{\OptionNotUsed}
+\DeclareOption{nopsfont}{\setboolean{optpsfont}{false}}
+\DeclareOption{psfont}{\setboolean{optpsfont}{true}}
+\DeclareOption{sfdefs}{\setboolean{optsfdefs}{true}}
+\DeclareOption{nosfdefs}{\setboolean{optsfdefs}{false}}
+\ProcessOptions
+
+%\ifthenelse{\boolean{optdraft}}{\RequirePackage{doublespace}}{}
+
+% Set font unless "nopsfont" option given
+\ifthenelse{\boolean{optpsfont}}%
+{\RequirePackage{pslatex}}%
+{}
+
+
+
+\newlength{\sectioninitheight}
+\newlength{\sectioninitheightafter}
+
+\ifthenelse{\boolean{opttight}}{\setlength{\sectioninitheight}{-.7ex
+    plus -.6ex minus -.2ex}}{\setlength{\sectioninitheight}{-1.5ex plus
+    -1ex minus -.2ex}}
+
+\ifthenelse{\boolean{opttight}}{\setlength{\sectioninitheightafter}{.7ex
+    plus .1ex}}{\setlength{\sectioninitheightafter}{1.5ex plus
+    .2ex}}
+
+\renewcommand{\section}{\@startsection
+{section}%                    % the name
+{1}%                          % the level
+{0mm}%                        % the indent
+{\sectioninitheight}%             % the beforeskip
+{\sectioninitheightafter}%           % the afterskip
+{\large\bfseries}}  % the style
+
+\renewcommand{\subsection}{\@startsection
+{subsection}%                    % the name
+{2}%                          % the level
+{0mm}%                        % the indent
+{-.7ex plus -.05ex minus -.05ex}%             % the beforeskip
+{.7ex plus .05ex}%           % the afterskip
+{\large\bfseries}}  % the style
+
+\renewcommand{\subsubsection}{\@startsection
+{subsubsection}%                    % the name
+{3}%                          % the level
+{0mm}%                        % the indent
+{-.5ex plus -.05ex minus -.05ex}%             % the beforeskip
+{.5ex plus .05ex}%           % the afterskip
+{\normalsize\bfseries}}  % the style
+
+\renewcommand{\paragraph}{\@startsection
+{paragraph}%                    % the name
+{4}%                          % the level
+{0mm}%                        % the indent
+{2mm}%             % the beforeskip
+{-1mm}%           % the afterskip
+{\ifthenelse{\boolean{optsfdefs}}{\normalsize\bfseries}{\normalsize\bfseries}}}  % the style
+
+
+\ifthenelse{\boolean{optdraft} \or \boolean{optdraft-c} \or
+\boolean{opttechreport}}
+{
+\renewcommand{\@maketitle}{
+  \begin{center}
+    {\LARGE\@title}
+    \par
+    \vspace{1pc}
+    {\large{\@author}}
+    \par 
+    \vspace{2pc}
+    {\textsf \@date}
+
+  \end{center}
+}
+}
+{
+\renewcommand{\@maketitle}{
+  \begin{center}
+    {\Large\bf\@title}
+    \par
+    \vspace{1pc}
+    {\large{\@author}}
+    \vspace{2pc}
+  \end{center}
+}
+}
+
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+% \ifthenelse{\boolean{opttight}}
+% {
+\renewcommand{\abstract}[1]{\noindent \textbf{\abstractname:}
+  #1}
+% }
+% {
+% \renewcommand{\abstract}[1]{\begin{center}\textsf{\textbf{\large\abstractname}}\end{center}\quote{#1}}
+% }
+
+\ifthenelse{\boolean{opttechreport}}{\newcommand{\techreport}[1]{#1}}{\newcommand{\techreport}[1]{}}
+
+\ifthenelse{\boolean{opttight}}
+{
+\setlength{\textheight}{9.25in}
+\setlength{\textwidth}{7in}
+\setlength{\topmargin}{-.25in}
+\setlength{\oddsidemargin}{-.25in}
+}
+{
+\ifthenelse{\boolean{optdraft}}
+{
+\setlength{\textheight}{8in}
+\setlength{\textwidth}{5.75in}
+\setlength{\topmargin}{0in}
+\setlength{\oddsidemargin}{0.375in}
+}
+{
+\ifthenelse{\boolean{optdraft-c}}
+{
+\setlength{\textheight}{8in}
+\setlength{\textwidth}{5.5in}
+\setlength{\topmargin}{0in}
+\setlength{\oddsidemargin}{-0.2in}
+}
+{
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-.25in}
+\setlength{\oddsidemargin}{0in}
+}
+}
+}
+
+\setlength{\headsep}{0in}
+\setlength{\columnsep}{1.5pc}
+
+\ifthenelse{\boolean{opttight}}{\renewcommand{\baselinestretch}{.98}}{}
+
+\let\oldCaption\caption
+\ifthenelse{\boolean{opttight}}{\renewcommand{\caption}[1]{\oldCaption{#1\vspace{-.3in}}}}{}
+
+\setlength{\marginparwidth}{1.75in}
+\ifthenelse{\boolean{optdraft-c}}
+{
+\newcommand{\commentary}[2]{\marginpar{{\small {\textbf{#1:} {\sl #2 }}}}}
+}
+{
+\newcommand{\commentary}[2]{}
+}
+
+\newcommand{\lasrbib}[1]{
+{
+% Output bookmark target in outline.
+\ifx\pdfoutput\undefined
+\else
+\pdfoutline goto name {References} {References}
+\fi
+\footnotesize
+\renewcommand{\baselinestretch}{0.6}
+\setlength{\parskip}{0pt}
+\bibliographystyle{abbrv}
+% Give target for pdf bookmark, should really go in \bibliography cmd.
+\ifx\pdfoutput\undefined
+\else
+\pdfdest name {References} xyz
+\fi
+\bibliography{#1}
+}}
+
+%%% Some useful macros
+\theoremstyle{plain}
+
+\ifthenelse{\boolean{optsfdefs}}%
+{\thm@headfont{\bfseries}}%
+{}
+
+%% \newtheorem{defn}{Definition}
+%% \newtheorem{definition}{Definition}
+%% \newtheorem{thm}{Theorem}
+%% \newtheorem{theorem}{Theorem}
+%% \newtheorem{prop}{Proposition}
+%% \newtheorem{lemm}{Lemma}
+%% \newtheorem{lemma}{Lemma}
+%% \newtheorem{coro}{Corollary}
+%% \newtheorem{clm}{Claim}
+%% \newtheorem{obs}{Observation}
+%% \newtheorem{res}{Result}
+%% \newtheorem{prin}{Principle}
+%% \newtheorem{conc}{Conclusion}
+%% \newtheorem{exam}{Example}
+% \newcommand{\qed}{\nolinebreak[1]~~~\hspace*{\fill}
+%   \rule{5pt}{5pt}\vspace*{\parskip}\vspace*{1ex}}
+
+
+%
+% Give latex lots of freedom to cram figures onto pages that
+% already have figures or text (and not much freedom to create partially
+% full pages of only figures)
+%
+\renewcommand{\textfraction}{0.01}
+\setcounter{topnumber}{100}
+\setcounter{dbltopnumber}{100}
+\setcounter{totalnumber}{100}
+\renewcommand{\topfraction}{.95}
+\renewcommand{\floatpagefraction}{.95}
+\renewcommand{\dbltopfraction}{.95}
+\renewcommand{\dblfloatpagefraction}{.95}
+\setcounter{dbltopnumber}{100}
+
