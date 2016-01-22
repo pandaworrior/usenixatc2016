@@ -1,0 +1,46 @@
+
+%%%%%%%%%%%% PSEUDO CODE MACROS
+%\usepackage{boxedminipage}
+
+
+% Use tabbing for pseudocode
+\newcommand{\pseudocodetabrule}{00 \= 0 \= 0 \= 0 \= 0 \= 0 \= 0 \= \kill }
+\newenvironment{pseudocode}{\begin{tabbing}\pseudocodetabrule}
+  {\end{tabbing}}
+%\newenvironment{pseudocodebox}{\noindent\begin{boxedminipage}{\columntextwidth}\begin{tabbing}\pseudocodetabrule}
+%  {\end{tabbing}\end{boxedminipage}}
+
+\newenvironment{pseudocodebox}{\noindent\begin{minipage}{\columntextwidth}\begin{tabbing}\pseudocodetabrule}
+  {\end{tabbing}\end{minipage}}
+
+
+% listings package
+\usepackage{listings}
+% Define style used for pseudocode so that figures are consistent
+\lstdefinelanguage{lstpseudocode}
+{keywordstyle={\bf},
+  morekeywords={when,foreach,if,then,do,else,send,rcv,to}, % bold keywords
+  morecomment=[l][\em]{//}, % emph // these comments
+  moredelim=[is][\ttfamily]{|}{|}, % typewriter |these words|
+  moredelim=[is][\itshape]{<<}{>>} % italicize <<these words>>
+}[keywords,comments,directives]
+
+\newcommand{\pseudocodeinput}[2][]
+{\setlength{\fboxsep}{.75pc}%
+  \begin{minipage}{\textwidth}\scriptsize%
+    \lstset{language=lstpseudocode,
+      xleftmargin=1.2pc,
+      aboveskip=0pc,
+      belowskip=0pc,
+      numberblanklines=false,
+      sensitive=true,
+      numbers=left,
+      escapechar=@,
+      mathescape=true,
+      breaklines=true}
+    \lstinputlisting[#1]{#2}%
+  \end{minipage}}
+
+
+
+
