@@ -1,0 +1,67 @@
+\usepackage{ifthen}
+\usepackage{ulem}
+\normalem
+\newcommand{\eat}[1]{}
+
+%%%%%%%%%%%  A couple of useful lines for tracking comments on text.
+\newcommand{\MB}[1]{\textcolor{blue}{#1}}
+\newcommand{\MP}[1]{\textcolor{red}{#1}}
+\newcommand{\comments}[1]{\color{red}\textbf{\{TODO:#1\}}\color{black}}
+
+%% Is the version public or not?
+\newboolean{publicversion}
+%\setboolean{publicversion}{true}
+\setboolean{publicversion}{false}
+
+
+
+%% a collection of commands that are enabled/disabled in public versions
+\ifthenelse{\boolean{publicversion}}{
+   \newcommand{\grumbler}[2]{}
+   \newcommand{\grumblerInline}[2]{}
+  \newcommand{\changebars}[2]{#1}
+}{
+   \newcommand{\grumbler}[2]{\MP{ {\bf #1}: #2}}
+%   \setlength{\marginparwidth}{.8in}
+   \newcommand{\grumblerInline}[2]{\MP{{\bf #1}: #2}}
+%   \newcommand{\grumbler}[2]{\grumblerInline{#1}{#2}}
+  \newcommand{\changebars}[2]{ 
+       {\tiny [\MB{check}]}
+         [{\tiny (\MB{new})} {#1}]
+         [{\sout{#2}}]
+   }
+}
+
+
+
+
+%%  person specific grumblers
+\newcommand{\public}[1]{\grumbler{PUBLIC}{#1}}
+\newcommand{\allen}[1]{\grumbler{ac}{#1}}
+\newcommand{\cheng}[1]{\grumbler{cl}{#1}}
+\newcommand{\daniel}[1]{\grumbler{dp}{#1}}
+\newcommand{\joao}[1]{\grumbler{jl}{#1}}
+\newcommand{\nuno}[1]{\grumbler{np}{#1}}
+\newcommand{\rodrigo}[1]{\grumbler{rr}{#1}}
+\newcommand{\viktor}[1]{\grumbler{vv}{#1}}
+
+
+%% a semi-anonymous grumbler for use when you want to stir the ant
+%% pile without really making it into a fight.
+\newcommand{\devil}[1]{\grumbler{Devil's Advocate}{#1}}
+
+%%% disclaimer
+
+\newcommand{\disclaimer}{\public{This paper currently has publicversion = false.  To remove
+  internal comments, change the appropriate line in grumble.sty.
+ \textbackslash cheng\{comment\} adds a comment attributed to cheng, and 
+similar commands are in place for allen, daniel, joao, nuno, rodrigo, and viktor.
+ There is also a command for \textbackslash devil, intended for
+  anonymous devil's advocate type comments. In addition, the pagelimit notes are rough targets for how long the various
+ sections should be. If there is a text change that is debatable, use \textbackslash changebars\{\}\{\} 
+ where the first parameter is the new text and the second parameter is the old text. 
+%These are {\it rough} guidelines and anything within a factor of 4 should be considered acceptable at this point in time.
+}}
+
+
+
