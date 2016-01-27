@@ -1,0 +1,24 @@
+\subsection{State convergence}
+\label{sec:properties:converge}
+A PoR-consistent replicated system is state convergent if all its replicas reach
+the same final state when the system becomes quiescent, i.e., for any pair of causal legal serializations
+of any R-Order, $L_{1}$ and $L_{2}$, we have $S_0(L_1) = S_0(L_2)$, where $S_0$ is the valid initial state. We
+state the necessary and sufficient conditions to achieve this in the following theorem.
+
+%\begin{mydef}
+%\textbf{Convergence}: A system $\mathscr{S}$ starting from an initial state $S$ and with a set of restrictions $R$ is convergent if,
+%for any execution of $\mathscr{S}$ and its corresponding R-Order $O$, any two legal serializations of $O$, $L_{1}$ and $L_{2}$, are state convergent, i.e., $S(L_{1}) = S(L_{2})$.
+%\label{def:converge}
+%\end{mydef}
+
+%\cheng{Why we use the term legal serialization instead of causal legal serialization is because that the number of replicas can be dynamically changed.}
+
+\begin{theorem}
+\label{theorem:convergence}
+\emph{(Convergence Theorem)}
+A \PRCAJ\ system $\mathscr{S}$ with a set of restrictions $R$ is \textbf{convergent}, if and only if,
+for any pair of its shadow operations $u$ and $v$, $r(u, v) \in R$ if $u$ and $v$ don't commute.
+\footnote{All proofs can be found in a separate technical report~\cite{}.}
+\end{theorem}
+
+
