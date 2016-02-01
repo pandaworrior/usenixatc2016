@@ -1,67 +1,157 @@
 \usepackage{ifthen}
 \usepackage{ulem}
+\usepackage{color,soul}
+\usepackage[compact]{titlesec}
+\usepackage{array}
 \normalem
-\newcommand{\eat}[1]{}
+
+%\definecolor{lightblue}{rgb}{0.8,0.8,1.0}
+%\definecolor{lightblue}{rgb}{1.0,0,0}
+\definecolor{lightblue}{rgb}{0.6,1.0,0.6}
+\sethlcolor{lightblue}
+
 
 %%%%%%%%%%%  A couple of useful lines for tracking comments on text.
 \newcommand{\MB}[1]{\textcolor{blue}{#1}}
 \newcommand{\MP}[1]{\textcolor{red}{#1}}
-\newcommand{\comments}[1]{\color{red}\textbf{\{TODO:#1\}}\color{black}}
+
+%%%for specifying the table column size and putting content in the center
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newcommand{\reviewercomment}[2]{\MB{comment #1---#2}}
 
 %% Is the version public or not?
 \newboolean{publicversion}
 %\setboolean{publicversion}{true}
 \setboolean{publicversion}{false}
 
+\newboolean{techreport}
+%\setboolean{techreport}{true}
+\setboolean{techreport}{false}
+%define the output in onecolumn or two columns
+\ifthenelse{\boolean{techreport}}{
+\onecolumn
+}{
+\twocolumn
+}
 
+%enable only when it is conference version
+
+\newcommand{\conferenceOnly}[1]{\ifthenelse{\boolean{techreport}}{
+}{{#1}}}
+
+%define different sizes for both version
+\ifthenelse{\boolean{techreport}}{
+\newcommand{\minipagesizea}{0.48}
+\newcommand{\graphsizea}{0.5}
+}{
+\newcommand{\minipagesizea}{1.0}
+\newcommand{\graphsizea}{0.45}
+}
 
 %% a collection of commands that are enabled/disabled in public versions
+
 \ifthenelse{\boolean{publicversion}}{
-   \newcommand{\grumbler}[2]{}
-   \newcommand{\grumblerInline}[2]{}
+  \newcommand{\grumbler}[2]{}
   \newcommand{\changebars}[2]{#1}
+  \newcommand{\pagelimit}[1]{}
+   \ifthenelse{\boolean{techreport}}{
+     \newcommand{\techReportOnly}[1]{#1}
+     \newcommand{\confVersionOnly}[1]{}
+   }{
+       \newcommand{\techReportOnly}[1]{}
+       \newcommand{\confVersionOnly}[1]{#1}
+   }
 }{
-   \newcommand{\grumbler}[2]{\MP{ {\bf #1}: #2}}
-%   \setlength{\marginparwidth}{.8in}
-   \newcommand{\grumblerInline}[2]{\MP{{\bf #1}: #2}}
-%   \newcommand{\grumbler}[2]{\grumblerInline{#1}{#2}}
-  \newcommand{\changebars}[2]{ 
-       {\tiny [\MB{check}]}
-         [{\tiny (\MB{new})} {#1}]
-         [{\sout{#2}}]
+  \newcommand{\grumbler}[2]{{\color{red}{\bf #1:} #2}}
+  \newcommand{\pagelimit}[1]{{\hl{ #1 pages}}}
+  \newcommand{\changebars}[2]{{\tiny [check]}[{\em \color{red}#1}] [{\sout {\em #2}]}}
+   \ifthenelse{\boolean{techreport}}{
+     \newcommand{\techReportOnly}[1]{}%{#1}
+     \newcommand{\confVersionOnly}[1]{{\tiny [conf-version]}{\em #1}}
+   }{
+       \newcommand{\techReportOnly}[1]{}%{\tiny [tech-report]}{\em #1}{\tiny [end tech-report]}}
+       \newcommand{\confVersionOnly}[1]{#1}
    }
 }
+
+%insert a breakline into math formula
+\newcommand{\mytuple}[1]{%
+  \@tempcnta=0
+  \bigl\langle
+  \@for\@ii:=#1\do{%
+    \@insertbreakingcomma
+    \textit{\@ii}
+  }%
+  \bigr\rangle
+}
+\def\@insertbreakingcomma{%
+  \ifnum \@tempcnta = 0 \else\,,\ \linebreak[1] \fi
+  \advance\@tempcnta\@ne
+}
+
+%% \ifthenelse{\boolean{publicversion}}{
+%%    \newcommand{\grumbler}[2]{}
+%%    \newcommand{\grumblerInline}[2]{}
+%%   \newcommand{\changebars}[2]{#1}
+%% }{
+%%    \newcommand{\grumbler}[2]{\MP{\scriptsize {\bf #1}: #2}}
+%% %   \setlength{\marginparwidth}{.8in}
+%%    \newcommand{\grumblerInline}[2]{\MP{{\bf #1}: #2}}
+%% %   \newcommand{\grumbler}[2]{\grumblerInline{#1}{#2}}
+%%   \newcommand{\changebars}[2]{ 
+%%        {\tiny [\MB{check}]}
+%%          [{\tiny (\MB{new})} {#1}]
+%%          [{\sout{#2}}]
+%%    }
+%% }
 
 
 
 
 %%  person specific grumblers
 \newcommand{\public}[1]{\grumbler{PUBLIC}{#1}}
-\newcommand{\allen}[1]{\grumbler{ac}{#1}}
-\newcommand{\cheng}[1]{\grumbler{cl}{#1}}
-\newcommand{\daniel}[1]{\grumbler{dp}{#1}}
-\newcommand{\joao}[1]{\grumbler{jl}{#1}}
-\newcommand{\nuno}[1]{\grumbler{np}{#1}}
+
 \newcommand{\rodrigo}[1]{\grumbler{rr}{#1}}
-\newcommand{\viktor}[1]{\grumbler{vv}{#1}}
+\newcommand{\johannes}[1]{\grumbler{jg}{#1}}
+\newcommand{\cheng}[1]{\grumbler{cl}{#1}}
+\newcommand{\nuno}[1]{\grumbler{np}{#1}}
+\newcommand{\allen}[1]{\grumbler{agc}{#1}}
+\newcommand{\daniel}[1]{\grumbler{dp}{#1}}
+
 
 
 %% a semi-anonymous grumbler for use when you want to stir the ant
 %% pile without really making it into a fight.
 \newcommand{\devil}[1]{\grumbler{Devil's Advocate}{#1}}
-
-%%% disclaimer
-
-\newcommand{\disclaimer}{\public{This paper currently has publicversion = false.  To remove
-  internal comments, change the appropriate line in grumble.sty.
- \textbackslash cheng\{comment\} adds a comment attributed to cheng, and 
-similar commands are in place for allen, daniel, joao, nuno, rodrigo, and viktor.
- There is also a command for \textbackslash devil, intended for
-  anonymous devil's advocate type comments. In addition, the pagelimit notes are rough targets for how long the various
- sections should be. If there is a text change that is debatable, use \textbackslash changebars\{\}\{\} 
- where the first parameter is the new text and the second parameter is the old text. 
-%These are {\it rough} guidelines and anything within a factor of 4 should be considered acceptable at this point in time.
-}}
-
-
-
+\newcommand{\disclaimer}{\grumbler{Note}{There are a few tips for joining
+in the writing process of this paper:\\ 
+\ \  a) This paper currently has publicversion = {\it false}. To remove internal 
+comments, change the appropriate line in grumble.sty.\\
+%\ \  b) This paper currently has at the technical report mode. To switch to
+%the conference version, please change techreport to {\it false} in grumble.sty\\
+\ \  c) \textbackslash allen\{comment\} adds a comment attributed to allen.
+Similar commands are in place for cheng, daniel, rodrigo, johannes, and nuno.\\
+%\ \  d) There is also a command for \textbackslash devil, intended for
+%anonymous devil's advocate type comments.\\
+\ \  e) The \textbackslash pagelimit notes are rough targets for how long the various
+sections should be.\\
+%\ \  f) These are {\it rough} guidelines and anything within a factor of 4 
+%should be considered acceptable at this point in time.\\
+\ \  g) If there is a text change that is debatable, use \textbackslash\ changebars \{\}\{\}
+where the first parameter is the new text and the second parameter is the old text.\\
+%\ \  h)  there is a new command \textbackslash reviewercomment\{number\}\{commentary\} for the reviewer comments.   \reviewercomment{1}{addressed}
+}
+}
+% %%% disclaimer
+% \newcommand{\disclaimer}{\public{This paper currently has publicversion = false.  To remove
+%   internal comments, change the appropriate line in grumble.sty.
+%  \textbackslash allen\{comment\} adds a comment attributed to allen.
+%  similar commands are in place for cheng, daniel, rodrigo, johannes, and
+%   nuno.
+%  there is also a command for \textbackslash devil, intended for
+%   anonymous devil's advocate type comments
+%  the pagelimit notes are rough targets for how long the various
+%  %sections should be. if there is a text change that is debatable, use \textbackslash changebars\{\}\{\}  where the first parameter is the new text and the second parameter is the old text. These are {\it rough} guidelines and anything
+%  within a factor of 4 should be considered acceptable at this point in time.
+% }}

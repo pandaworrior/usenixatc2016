@@ -1,129 +1,152 @@
-% TEMPLATE for Usenix papers, specifically to meet requirements of
-%  USENIX '05
-% originally a template for producing IEEE-format articles using LaTeX.
-%   written by Matthew Ward, CS Department, Worcester Polytechnic Institute.
-% adapted by David Beazley for his excellent SWIG paper in Proceedings,
-%   Tcl 96
-% turned into a smartass generic template by De Clarke, with thanks to
-%   both the above pioneers
-% use at your own risk.  Complaints to /dev/null.
-% make it two column with no page numbering, default is 10 point
+%-----------------------------------------------------------
+%
+% RSM_PARALLEL/main.tex
+%
+%-----------------------------------------------------------
 
-% Munged by Fred Douglis <douglis@research.att.com> 10/97 to separate
-% the .sty file from the LaTeX source template, so that people can
-% more easily include the .sty file into an existing document.  Also
-% changed to more closely follow the style guidelines as represented
-% by the Word sample file. 
+% Switching between these two statements controls the number of
+% columns. The default setup is one column with the draft option
+% given to the shangrila package for doublespacing.
 
-% Note that since 2010, USENIX does not require endnotes. If you want
-% foot of page notes, don't include the endnotes package in the 
-% usepackage command, below.
+\documentclass[10pt,twocolumn]{article}
+%\documentclass[11pt,letterpaper]{article}
+\usepackage{usenix}
 
-% This version uses the latex2e styles, not the very ancient 2.09 stuff.
-\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{times}
+\usepackage{fullpage}
+%\usepackage[font=sf,labelfont={sf,bf}]{caption}
+% Remove dummycite below when the paper contains a real citation.
+% This will make the \dc command void.
+\usepackage{lasr}
 
-\usepackage{usenix,epsfig,endnotes}
-\usepackage{amsmath}
-\usepackage{color}
-%\usepackage{hyperref}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%\newcommand{\systemName}{Eve}
+
+%
+% NOTE: hyperref and citesort are NOT COMPATIBLE
+% use one or the other.
+%
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+% adding in the grumbler package/support
+%\usepackage{algorithmicx}
+\usepackage{algorithmic}
 \usepackage{grumble}
-\usepackage{pseudocode}
-\usepackage{macro}
-\usepackage{graphicx}
-\usepackage{subfigure}
-\usepackage{url}
+
 \usepackage{multirow}
-%try to reduce the space between items
-\usepackage{enumitem}
-\setlist{nolistsep}
+%\usepackage{subfigure}
+\usepackage{subfig}
+\usepackage{macros}
+\usepackage{pseudocode}
 
-%\renewcommand{\baselinestretch}{.97}
-%\addtolength{\textheight}{0.0cm}
-%\addtolength{\textwidth}{0.0cm}
-\addtolength{\intextsep}{-0.2cm}% : space left on top and bottom of an in-text float.
-\addtolength{\textfloatsep}{-0.3cm}% is \textfloatsep for 2 column output.
-\addtolength{\abovecaptionskip}{-0.2cm}%: space above caption
-\addtolength{\belowcaptionskip}{-0.2cm}%: space below caption
+\usepackage{bibspacing}
+\usepackage{mdwlist}
+\newcommand{\eat}[1]{}
 
-\let\oldsubsection\subsection
-\renewcommand{\subsection}[1]{%
-  \vspace{-0.5cm}\oldsubsection{#1}\vspace{-0.1cm}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SQUEEEEEEEEZE the space...This should be an option in lasr.sty...
+
+\usepackage{tweaklist}
+\renewcommand{\enumhook}{\setlength{\topsep}{0pt} \setlength{\itemsep}{0pt}\setlength{\leftmargin}{1em}}
+%\renewcommand{\descripthook}{\setlength{\topsep}{0pt} \setlength{\itemsep}{0pt}}
+\renewcommand{\itemhook}{\setlength{\topsep}{0pt} \setlength{\itemsep}{0pt}\setlength{\leftmargin}{1em}}
+
+\newcommand{\squeezeSmallAboveCaption}{\vspace{-1em}}
+\newcommand{\squeezeAboveCaption}{\vspace{-2em}}
+\newcommand{\squeezeBelowCaption}{\vspace{-1.3em}}
+
+                                                                                                                         
+\newcommand{\specialcell}[2][c]{%                                                                                                   
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\newcommand\newemdashes{\nobreakdash---}
+
+
+
+%%%%%%%%%%%%% manual space tweaks below
+
+
+%%%condense the references
+\setlength{\bibspacing}{\baselineskip}
+%%%reduce the margin places between floats including pictures and tables and text
+\setlength{\floatsep}{0in}
+\setlength{\textfloatsep}{3pt plus 1.0pt minus 2.0pt}
+\setlength{\intextsep}{3pt plus 1.0pt minus 2.0pt}
+\setlength{\dbltextfloatsep}{3pt plus 1.0pt minus 2.0pt}
+\setlength{\dblfloatsep}{3pt plus 1.0pt minus 2.0pt}
+\setlength{\abovecaptionskip}{1pt plus 1.0pt minus 1.0pt}
+\setlength{\belowcaptionskip}{2pt plus 1.0pt minus 1.0pt}
+
+%%paragraphs
+\setlength{\parindent}{0.2in}
+\setlength{\parskip}{0pt plus 1pt minus 1pt}
+%\setlength{\parsep}{0pt plus 1pt minus 1pt}
+\setlength{\parsep}{0pt}
+%\setlength{\partopsep}{} 
+%    \topsep 
+\titlespacing{\section}{0pt}{0.9ex}{0.7ex}
+\titlespacing{\subsection}{0pt}{0.8ex}{0.6ex}
+\titlespacing{\subsubsection}{0pt}{0.7ex}{0.5ex}
+%\titlespacing{\section}{0pt}{7pt plus 1pt minus 1pt}{2pt plus 1 pt minus 1pt}
+%\titlespacing{\subsection}{0pt}{*0}{*0}
+%\titlespacing{\subsubsection}{0pt}{*0}{*0}
+%\fboxsep=0pt
+
+%%%%%set item indent size for enumerate or item list
+\newcommand{\setlistspace}{\setlength{\topsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\leftmargin}{1em}\setlength{\itemindent}{0in}}
+
+%%%%cut the space between subfigures in a bigfigure
+\newcommand{\densesubfigure}{\vspace{-2mm}}
+%%%Two-row title
+\title{
+%\fontsize{16pt}{12pt}\selectfont 
+Fast Geo-Replicated Services with Little Coordination}
+
+
+\author{\fontsize{11pt}{12pt}\selectfont 
+ TBA
+  %Cheng Li$^{\dagger}$, Daniel
+  %Porto$^{*\dagger}$, Allen Clement$^\dagger$, Johannes
+  %Gehrke$^{\ddagger}$, Nuno Pregui\c{c}a$^*$, Rodrigo
+  %Rodrigues$^*$\\ 
+  %\small $^\dagger$Max Planck Institute for Software
+  %Systems (MPI-SWS), $^*$CITI / DI-FCT-Universidade Nova de Lisboa,
+  %$^\ddagger$Cornell University
+%email addresses here.                                                                                                                   
 }
 
-\let\oldsection\section
-\renewcommand{\section}[1]{
-  \vspace{-0.5cm}\oldsection{#1}\vspace{-0.1cm}%
-}
 
+
+%-----------------------------------------------------------
 
 \begin{document}
 
-%don't want date printed
-\date{}
-
-%make title bold and 14 pt font (Latex default is non-bold, 16 pt)
-%\title{\Large \bf Wonderful : A Terrific Application and Fascinating Paper}
-\title{TBD}
-
-%for single author (just remove % characters)
-\author{%\fontsize{10}{12} \selectfont
-TBA
-%%%{\rm Cheng Li$^\ddag$, Jo\~{a}o Leit\~{a}o$^\dag$,  Allen Clement$^\ddag$, Nuno Pregui\c{c}a$^\dag$, Rodrigo Rodrigues$^\dag$, Viktor Vafeiadis$^\ddag$}\\
-%%%$\dag$ CITI-FCT, $\ddag$ MPI-SWS
-%% {\rm Cheng Li, Allen Clement, Viktor Vafeiadis}\\
-%% MPI-SWS
-%% \and
-%% {\rm Jo\~{a}o Leit\~{a}o, Nuno Pregui\c{c}a, Rodrigo Rodrigues}\\
-%% CITI-FCT
-%% % copy the following lines to add more authors
-%% \and
-%% {\rm Allen Clement}\\
-%% MPI-SWS
-%% \and
-%% {\rm Nuno Pregui\c{c}a}\\
-%% CITI-FCT  
-%% \and
-%% {\rm Rodrigo Rodrigues}\\
-%% CITI-FCT 
-%% \and
-%% {\rm Viktor Vafeiadis}\\
-%% MPI-SWS
-} % end author
-
 \maketitle
 
-% Use the following at camera-ready time to suppress page numbers.
-% Comment it out when you first submit the paper for review.
-\thispagestyle{empty}
-
+\disclaimer
+ 
+\pagelimit{Reviewing is single blind. Including figures and tables, but not including references. 11}\\                                                                                                                  
 \input{abstract}
-
 \input{intro}
 \input{related}
-%\input{implement}
+\input{model}
+\input{porconsistency}
+\input{inference}
+\input{implement}
 \input{evaluation}
 \input{conclusion}
 
+% We recommend abbrvnat bibliography style.                                                                                         
 
-\let\section\oldsection
+% The bibliography should be embedded for final submission.                                                                         
 
-\let\oldbibliography\thebibliography
-\renewcommand{\thebibliography}[1]{%
-  \oldbibliography{#1}%
-  \setlength{\itemsep}{-5pt}%
+%\softraggedright                                                                                                                   
+{
+\bibliography{main}
+\bibliographystyle{abbrv}
 }
 
-{
-\renewcommand{\baselinestretch}{.9}
- \vspace{-0.5cm}
-\bibliographystyle{acm}
-\bibliography{main}}
-
-\renewcommand{\baselinestretch}{1.0}
-\vspace{-0.5cm}
-\theendnotes
 
 \end{document}
+
 

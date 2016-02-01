@@ -1,9 +1,10 @@
 \subsection{Invariant preservation}
 \label{sec:properties:inv}
-As presented in the RedBlue consistency chapter (Chapter~\ref{chapter:redblue}), the methodology
-for identifying restrictions imposed on RedBlue orders for maintaining invariants is to check if
+RedBlue consistency proposes a methodology
+for identifying restrictions imposed on RedBlue orders for maintaining invariants,
+which is to check if
 a shadow operation is invariant safe or not. If not, to avoid invariant 
-violations, the generation and replication of all non-invariant safe shadow operations must be coordinated. 
+violations, the generation and replication of all non-invariant safe shadow operations must be coordinated~\cite{Li2012RedBlue}. 
 However, we observed that for some non-invariant safe shadow operations $u$, the corresponding violation
 only happens when a particular subset of non-invariant safe shadow operations are not partially ordered. 
 To eliminate all invariant violating executions with a minimal amount of coordination, therefore, 
@@ -23,7 +24,6 @@ $S' + h_{u}(S)$ is also a valid state.
 For simplicity, for any shadow operation $u$, we denote $u.isc$ as its invariant preserving condition. Apparently,
 if $u$ is an invariant safe shadow operation, then $u.isc = $ {\tt true} w.r.t all valid state.
 \fi
-\changebars{
 \begin{mydef}
 [Invariant-conflict operation set] A set of
 shadow operations $G$ is an invariant-conflict operation set (or short, I-conflict set), if
@@ -37,7 +37,6 @@ $S(P + u)$ is invalid.
 \end{itemize}
 \label{def:iconflictset}
 \end{mydef}
-}{}
 
 In the above definition, the last point asserts that
 $G$ is minimal, i.e., removing one shadow operation from it will no
@@ -52,12 +51,12 @@ we end up with an invalid state, where $Charlie$ rather than $Bob$ and $Alice$ w
 the auction. This invariant violating execution
 involves three concurrent shadow operations, but one of the two bid placing shadow
 operations is not necessarily to be included in $G$, as even after excluding
-the request from either $Bob$ or $Alice$, the violation still remains. \changebars{According
+the request from either $Bob$ or $Alice$, the violation still remains. According
 to Definition~\ref{def:iconflictset}, $\{ placeBid', closeAuction'\}$ is an \texttt{I-conflict set},
 while $\{placeBid', placeBid', closeAuction'\}$ is not. Intuitively, avoiding invariant
 violations is to prevent all operations from the corresponding \texttt{I-conflict} set
 from running in a coordination-free manner. The minimality property enforced in the \texttt{I-conflict set}
-definition allows us to avoid adding unnecessary restrictions.}{}  
+definition allows us to avoid adding unnecessary restrictions.  
 
 Based on the above definition, we then can
  formulate the invariant preservation property into the following theorem.

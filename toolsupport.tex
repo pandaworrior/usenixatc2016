@@ -20,25 +20,24 @@ for learning if the local counters lag behind the global counters, which means
 the corresponding data centers have to wait until all missing operations have been locally
 incorporated. For the {\tt Asym} protocol, every agent maintains a list of active barriers, which
 are used for locally deciding if the counterpart operations of such barriers can proceed or must wait.
-
+\if 0
 \begin{figure}[t!]
 \centering
 \includegraphics[width=0.76\columnwidth]{./figures/tool_intergated.pdf}
 \caption{\coordtool\ connected with \tool\ and \gemini}
 \label{fig:toolwithenvironment}
 \end{figure}
-
+\fi
 \subsection{Implementation}
 We implemented \coordtool\ using Java ($2.8k$ lines of code)~\footnote{The lines of code is
 measured by {\tt cloc}~\cite{codecounter}.}, and used BFTSmart~\cite{bftsmartcode} for replicating
 the state of the centralized counter service, MySQL as the backend storage, and Netty
-as the communication library~\cite{Netty}. As shown in Figure~\ref{fig:toolwithenvironment},
-we integrated \coordtool\ with \gemini\ and \tool\ so
+as the communication library~\cite{Netty}. We integrated \coordtool\ with \gemini\ and \tool\ so
 that \gemini\ serves as the underlying causally consistent replication tier while \tool\ is used to
 produce commutative shadow operations at runtime. 
 
 \noindent\paragraph{Workflow:} A user issues her request to an application server locating at a nearby
-data center, which runs a \tool\ library introduced in Chapter~\ref{chapter:sieve} and
+data center, which runs a \tool\ library and
 a local agent shown in Figure~\ref{fig:tooldesign}. \tool\ intercepts the communication between
 the app server and the backend MySQL database and executes the corresponding generator operation.
 When the execution ends, \tool\ produces a commutative shadow operation that accumulates side effects
